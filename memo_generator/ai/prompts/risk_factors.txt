@@ -1,0 +1,10 @@
+Write the RISK FACTORS section of the Investment Memorandum.
+
+For each risk identified, provide:
+1. A clear risk statement (bold)
+2. One sentence explaining the nature of the risk
+3. One sentence on the mitigation strategy
+
+Also include 1-2 macro/systematic risks (interest rate environment, cap rate expansion) even if not explicitly listed.
+
+Format as a structured list. Be honest about risks — sophisticated investors expect candor, not spin.

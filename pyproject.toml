@@ -1,0 +1,9 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "real-estate-memo-generator"
+version = "0.1.0"
+description = "Automated real estate investment memo generation using Claude AI"
+requires-python = ">=3.10"

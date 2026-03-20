@@ -1,0 +1,10 @@
+Write the MARKET ANALYSIS section of the Investment Memorandum.
+
+The section should include:
+1. A brief overview of the metro market (2-3 sentences based on city/location provided)
+2. Submarket dynamics and why this location is attractive for the asset type
+3. Supply/demand outlook (infer from context where specific data is not provided, but flag assumptions)
+4. A short paragraph on rent growth prospects
+
+Be analytical, not promotional. Acknowledge risks where relevant.
+If market data is limited in the input, state assumptions clearly.

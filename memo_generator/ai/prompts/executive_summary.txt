@@ -1,0 +1,8 @@
+Write the EXECUTIVE SUMMARY section of the Investment Memorandum.
+
+The section should include:
+1. A 2-3 sentence opening paragraph that captures the investment thesis and deal highlights
+2. A "Key Investment Highlights" block with 4-5 bullet points (specific, quantified where possible)
+
+Use the financial data provided. Do not include the metrics table (that is handled separately).
+Keep the tone direct and compelling — this is what the IC reads first.

@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.installed.cfg
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+
+# Secrets
+.env.local
+*.pem
+*.key
+secrets.json
+
+# Generated outputs
+outputs/
+generated_memos/
+*.memo.md
+*.memo.pdf
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/

@@ -1,0 +1,132 @@
+/* Investment Memo — Professional PDF Stylesheet */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10pt;
+    line-height: 1.55;
+    color: #1a1a1a;
+    background: white;
+}
+
+/* Page layout */
+@page {
+    size: Letter;
+    margin: 2cm 2.2cm 2.2cm 2.2cm;
+    @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        font-size: 8pt;
+        color: #888;
+    }
+}
+
+/* Cover / Header */
+.memo-header {
+    border-bottom: 3px solid #1a3a5c;
+    padding-bottom: 16px;
+    margin-bottom: 28px;
+}
+.memo-header .confidential {
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #c0392b;
+    text-transform: uppercase;
+}
+.memo-header h1 {
+    font-size: 20pt;
+    font-weight: 700;
+    color: #1a3a5c;
+    margin: 6px 0 2px;
+}
+.memo-header .subtitle {
+    font-size: 11pt;
+    color: #555;
+}
+.memo-header .meta {
+    font-size: 8.5pt;
+    color: #888;
+    margin-top: 8px;
+}
+
+/* Section headings */
+h2 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #1a3a5c;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1.5px solid #dde3ea;
+    padding-bottom: 5px;
+    margin: 24px 0 12px;
+}
+h3 {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #333;
+    margin: 14px 0 6px;
+}
+
+p { margin-bottom: 8px; }
+ul, ol { margin: 6px 0 10px 18px; }
+li { margin-bottom: 3px; }
+
+/* Key Metrics Table */
+.metrics-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 9.5pt;
+}
+.metrics-table th {
+    background: #1a3a5c;
+    color: white;
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: 600;
+}
+.metrics-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #e8ecf0;
+}
+.metrics-table tr:nth-child(even) td { background: #f5f7fa; }
+.metrics-table .value { text-align: right; font-weight: 500; }
+
+/* Cash Flow Table */
+.cf-table {
+    width: 60%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 9pt;
+}
+.cf-table th {
+    background: #2c5282;
+    color: white;
+    padding: 6px 10px;
+    text-align: left;
+}
+.cf-table td {
+    padding: 5px 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+.cf-table .value { text-align: right; }
+.cf-table tr.total td { font-weight: 700; border-top: 2px solid #2c5282; }
+
+/* Risk items */
+.risk-item { margin-bottom: 10px; }
+.risk-item strong { color: #c0392b; }
+
+/* Footer */
+.memo-footer {
+    margin-top: 30px;
+    padding-top: 10px;
+    border-top: 1px solid #dde3ea;
+    font-size: 7.5pt;
+    color: #aaa;
+}
+
+/* Page break helpers */
+.page-break { page-break-after: always; }
+.no-break { page-break-inside: avoid; }

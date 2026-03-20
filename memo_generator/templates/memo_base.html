@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Investment Memorandum — {{ property.property_name }}</title>
+  <link rel="stylesheet" href="{{ css_path }}" />
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="memo-header">
+  <div class="confidential">Confidential — For Authorized Recipients Only</div>
+  <h1>{{ property.property_name }}</h1>
+  <div class="subtitle">{{ property.city }}, {{ property.state_or_country }} &nbsp;·&nbsp; {{ property.property_type | title }}</div>
+  <div class="meta">Investment Memorandum &nbsp;·&nbsp; Prepared {{ prepared_date }}</div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<h2>Executive Summary</h2>
+<div class="no-break">
+  {{ sections.executive_summary | replace('\n', '<br>') | safe }}
+</div>
+
+<!-- KEY METRICS TABLE -->
+<h3>Key Investment Metrics</h3>
+<table class="metrics-table no-break">
+  <tr><th>Metric</th><th class="value">Value</th></tr>
+  <tr><td>Purchase Price</td><td class="value">${{ "{:,.0f}".format(metrics.purchase_price) }}</td></tr>
+  {% if metrics.price_per_unit %}<tr><td>Price per Unit</td><td class="value">${{ "{:,.0f}".format(metrics.price_per_unit) }}</td></tr>{% endif %}
+  {% if metrics.price_per_sqft %}<tr><td>Price per SF</td><td class="value">${{ "{:.2f}".format(metrics.price_per_sqft) }}</td></tr>{% endif %}
+  <tr><td>Going-in Cap Rate</td><td class="value">{{ "{:.2%}".format(metrics.cap_rate) }}</td></tr>
+  <tr><td>NOI (Year 1)</td><td class="value">${{ "{:,.0f}".format(metrics.noi) }}</td></tr>
+  <tr><td>DSCR</td><td class="value">{{ "{:.2f}".format(metrics.dscr) }}x</td></tr>
+  <tr><td>LTV</td><td class="value">{{ "{:.1%}".format(metrics.ltv) }}</td></tr>
+  <tr><td>Cash-on-Cash Return (Yr 1)</td><td class="value">{{ "{:.2%}".format(metrics.cash_on_cash_yr1) }}</td></tr>
+  <tr><td>Levered IRR ({{ property.hold_period_years }}-yr hold)</td>
+      <td class="value">{% if metrics.irr is not none %}{{ "{:.2%}".format(metrics.irr) }}{% else %}N/A{% endif %}</td></tr>
+  <tr><td>Equity Multiple</td><td class="value">{{ "{:.2f}".format(metrics.equity_multiple) }}x</td></tr>
+</table>
+
+<!-- MARKET ANALYSIS -->
+<h2>Market Analysis</h2>
+{{ sections.market_analysis | replace('\n', '<br>') | safe }}
+
+<!-- INVESTMENT STRATEGY -->
+<h2>Investment Strategy</h2>
+{{ sections.investment_strategy | replace('\n', '<br>') | safe }}
+
+<!-- FINANCIAL ANALYSIS -->
+<h2>Financial Analysis</h2>
+<h3>5-Year Cash Flow Projection</h3>
+<table class="cf-table no-break">
+  <tr><th>Period</th><th class="value">Cash Flow (USD)</th></tr>
+  <tr><td>Year 0 (Equity Invested)</td><td class="value">(${{ "{:,.0f}".format(metrics.cash_flows[0] | abs) }})</td></tr>
+  {% for cf in metrics.cash_flows[1:] %}
+  <tr><td>Year {{ loop.index }}</td>
+      <td class="value">{% if cf >= 0 %}${{ "{:,.0f}".format(cf) }}{% else %}(${{ "{:,.0f}".format(cf | abs) }}){% endif %}</td></tr>
+  {% endfor %}
+</table>
+
+<!-- RISK FACTORS -->
+<h2>Risk Factors</h2>
+{{ sections.risk_factors | replace('\n', '<br>') | safe }}
+
+<!-- FOOTER -->
+<div class="memo-footer">
+  This memorandum is intended solely for the use of the individual or entity to which it is addressed.
+  All projections are forward-looking estimates and are subject to material change.
+  Generated using automated analysis powered by Claude AI.
+</div>
+
+</body>
+</html>

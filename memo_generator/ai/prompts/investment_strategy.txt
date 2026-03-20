@@ -1,0 +1,9 @@
+Write the INVESTMENT STRATEGY section of the Investment Memorandum.
+
+The section should include:
+1. The value-add business plan (based on the strategy provided)
+2. Key operational levers and expected outcomes
+3. Renovation or improvement scope if applicable
+4. Stabilization timeline and assumptions
+
+Be specific about the execution plan. Quantify expected outcomes where the data supports it.
