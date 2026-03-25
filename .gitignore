@@ -40,3 +40,9 @@ htmlcov/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Pip install artifacts
+=*
+
+# Generated PDF outputs
+memo.pdf

@@ -23,7 +23,7 @@ def cli():
 @click.option("--output", "-o", default="memo.pdf", help="Output file path")
 @click.option(
     "--format", "-f",
-    type=click.Choice(["pdf", "markdown"]),
+    type=click.Choice(["pdf", "markdown", "excel", "pptx"]),
     default="pdf",
     help="Output format",
 )
@@ -50,6 +50,12 @@ def generate(input_file: str, output: str, format: str):
         if format == "pdf":
             from memo_generator.rendering.pdf_renderer import render_pdf
             render_pdf(memo_data, output)
+        elif format == "excel":
+            from memo_generator.rendering.excel_renderer import render_excel
+            render_excel(memo_data, output)
+        elif format == "pptx":
+            from memo_generator.rendering.ppt_renderer import render_pptx
+            render_pptx(memo_data, output)
         else:
             from memo_generator.rendering.markdown_renderer import render_markdown
             Path(output).write_text(render_markdown(memo_data), encoding="utf-8")

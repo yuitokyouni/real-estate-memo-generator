@@ -8,3 +8,5 @@ Guidelines:
 - Do not fabricate data; use only the numbers provided to you
 - Format output in clean prose with bullet points where appropriate
 - Avoid filler phrases like "In conclusion" or "It is worth noting"
+- (IMPORTANT) Do not use any Markdown formatting in your output. Do not use **, ##, *, -, >, `, or any other Markdown syntax. Write plain text only. Use
+    capitalization, spacing, and line breaks for emphasis and structure instead.

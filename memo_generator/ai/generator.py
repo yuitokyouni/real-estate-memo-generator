@@ -1,4 +1,5 @@
 """Orchestrates Claude API calls to generate all memo sections."""
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from memo_generator.ai.client import generate_section, _load_prompt
@@ -63,30 +64,42 @@ def _build_property_context(prop: PropertyInput, metrics: dict) -> str:
     return "\n".join(lines)
 
 
-def generate_all_sections(prop: PropertyInput) -> dict[str, str]:
+def _generate_one(args: tuple) -> tuple[str, str]:
+    """Worker function: load prompt, build user message, call Claude for one section."""
+    section_key, prompt_file, system_prompt, context = args
+    section_prompt = _load_prompt(prompt_file)
+    user_message = f"{section_prompt}\n\n{context}"
+    return section_key, generate_section(system_prompt=system_prompt, user_prompt=user_message)
+
+
+def generate_all_sections(prop: PropertyInput, metrics: dict | None = None) -> dict[str, str]:
     """
-    Generate all narrative sections of the investment memo.
+    Generate all narrative sections of the investment memo in parallel.
+
+    Args:
+        prop: Property input data.
+        metrics: Pre-calculated financial metrics. If None, they are calculated internally.
 
     Returns:
         Dict mapping section name to generated text.
     """
-    metrics = calculate_all_metrics(prop)
+    if metrics is None:
+        metrics = calculate_all_metrics(prop)
     context = _build_property_context(prop, metrics)
 
-    sections = {}
+    tasks = [
+        ("executive_summary", "executive_summary.txt", _SYSTEM_PROMPT, context),
+        ("market_analysis", "market_analysis.txt", _SYSTEM_PROMPT, context),
+        ("investment_strategy", "investment_strategy.txt", _SYSTEM_PROMPT, context),
+        ("risk_factors", "risk_factors.txt", _SYSTEM_PROMPT, context),
+    ]
 
-    for section_key, prompt_file in [
-        ("executive_summary", "executive_summary.txt"),
-        ("market_analysis", "market_analysis.txt"),
-        ("investment_strategy", "investment_strategy.txt"),
-        ("risk_factors", "risk_factors.txt"),
-    ]:
-        section_prompt = _load_prompt(prompt_file)
-        user_message = f"{section_prompt}\n\n{context}"
-        sections[section_key] = generate_section(
-            system_prompt=_SYSTEM_PROMPT,
-            user_prompt=user_message,
-        )
+    sections: dict[str, str] = {}
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = {executor.submit(_generate_one, task): task[0] for task in tasks}
+        for future in as_completed(futures):
+            section_key, text = future.result()
+            sections[section_key] = text
 
     return sections
 
@@ -94,7 +107,7 @@ def generate_all_sections(prop: PropertyInput) -> dict[str, str]:
 def generate_memo_data(prop: PropertyInput) -> dict:
     """Return all data needed to render the memo (metrics + AI sections)."""
     metrics = calculate_all_metrics(prop)
-    sections = generate_all_sections(prop)
+    sections = generate_all_sections(prop, metrics=metrics)
     return {
         "property": prop,
         "metrics": metrics,

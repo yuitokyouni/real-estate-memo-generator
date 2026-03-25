@@ -4,27 +4,25 @@
 
 ```mermaid
 flowchart TD
-    A([Client / User]) -->|JSON input| B[CLI: memo_generator generate]
+    A([Client / User]) -->|物件基本情報\n住所・価格・賃料・諸費用など| B[CLI: memo_generator generate]
     B --> C{Input Validation\nPropertyInput model}
     C -->|Invalid| ERR([Error: validation failed])
-    C -->|Valid| D[Financial Calculator\ncalculate_all_metrics]
+    C -->|Valid| D[Financial Calculator\n多年度CF / NOI / IRR / CCR / DSCR 等]
     D --> E[Build Property Context\n+ metrics dict]
-    E --> F[Claude API Client\nget_client]
+    E --> F[Claude API Client]
 
-    F --> G1[Section: Executive Summary]
-    F --> G2[Section: Investment Thesis]
-    F --> G3[Section: Financial Analysis]
-    F --> G4[Section: Risk Factors]
-    F --> G5[Section: Market Overview]
+    F --> G1[投資ストーリー生成]
+    F --> G2[リスク分析生成]
+    F --> G3[市場分析生成]
+    F --> G4[投資サマリー生成]
 
-    G1 & G2 & G3 & G4 & G5 --> H[Aggregate memo_data dict]
+    G1 & G2 & G3 & G4 --> H[Aggregate memo_data dict]
 
-    H --> I{Output Format?}
-    I -->|markdown| J[Markdown Renderer\n→ .md file]
-    I -->|pdf| K[HTML Renderer\n→ WeasyPrint\n→ .pdf file]
+    H --> I1[Excel Renderer\nopenpyxl\n10年CFシート・グラフ・感度分析\n→ .xlsx]
+    H --> I2[PPT Renderer\npython-pptx\n表紙・サマリー・CF図・リスク・結論\n※数値自動入力 / 文章はClaude生成\n→ .pptx]
 
-    J --> OUT([Delivered to Client])
-    K --> OUT
+    I1 --> OUT([Delivered to Client])
+    I2 --> OUT
 ```
 
 ---
@@ -33,29 +31,23 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    subgraph Day1["Day 1 (3/20) — インフラ"]
-        A1[APIキーローテーション] --> A2[GitHub commit\n+ PDF デモ]
-        A2 --> A3[Upwork Gig公開\n3プラン設定]
+    subgraph Phase1["Phase 1 — 開発"]
+        A1[Financial Calculator\n多年度CF・IRR・DSCR強化] --> A2[Excel Renderer\nopenpyxl実装]
+        A2 --> A3[PPT Renderer\npython-pptx実装]
+        A3 --> A4[Claude統合\nスライド文章自動生成]
     end
 
-    subgraph Day2["Day 2 (3/21) — 獲得"]
-        B1[Upwork Proposals\n25件送信] --> B2[LinkedIn / Reddit\n投稿・拡散]
-        B2 --> B3[返信・スコープ確認]
+    subgraph Phase2["Phase 2 — 獲得"]
+        B1[Upwork / LinkedIn\nデモ動画で差別化] --> B2[物件情報入力\n→ Excel+PPT即納品]
+        B2 --> B3[初回収益\n$149〜$349]
     end
 
-    subgraph Day3["Day 3 (3/22) — クロージング"]
-        C1[デモセッション\n実施] --> C2[JSON受取\n→ 即時生成\n→ PDF納品]
-        C2 --> C3[初回収益\n$99〜$249]
+    subgraph Scale["Phase 3 — スケール"]
+        C1[リピーター獲得] --> C2[Enterprise契約\n$499/mo\n複数物件一括処理]
+        C2 --> C3[Claude並列エージェント\n大量処理対応]
     end
 
-    Day1 --> Day2 --> Day3
-
-    subgraph Scale["Week 2以降 — スケール"]
-        D1[リピーター獲得] --> D2[Enterprise契約\n$499/mo]
-        D2 --> D3[Claude並列エージェント\n大量処理対応]
-    end
-
-    Day3 --> Scale
+    Phase1 --> Phase2 --> Scale
 ```
 
 ---
@@ -71,10 +63,11 @@ flowchart TD
     SPLIT --> AG3[Agent 3\n物件C処理]
     SPLIT --> AGN[Agent N\n物件N処理]
 
-    AG1 --> MERGE[マージャー\n全PDFを結合]
+    AG1 --> MERGE[マージャー]
     AG2 --> MERGE
     AG3 --> MERGE
     AGN --> MERGE
 
-    MERGE --> DELIVER([一括納品\n処理時間: 1/N に短縮])
+    MERGE --> OUT1([Excel一括納品\n各物件CFシート])
+    MERGE --> OUT2([PPT一括納品\n各物件スライド])
 ```
